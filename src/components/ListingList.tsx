@@ -7,10 +7,11 @@ import { ListingCard } from "@/components/ListingCard";
 
 interface ListingListProps {
   onEdit?: (listing: Listing) => void;
+  onFindMatches?: (listing: Listing) => void;
   refreshKey?: number;
 }
 
-export function ListingList({ onEdit, refreshKey }: ListingListProps) {
+export function ListingList({ onEdit, onFindMatches, refreshKey }: ListingListProps) {
   const [data, setData] = useState<PaginatedListings | null>(null);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState<ListingFilters>({
@@ -91,6 +92,7 @@ export function ListingList({ onEdit, refreshKey }: ListingListProps) {
                 key={listing.id}
                 listing={listing}
                 onEdit={onEdit}
+                onFindMatches={onFindMatches}
               />
             ))}
           </div>
