@@ -6,9 +6,10 @@ import { formatCurrency } from "@/lib/format";
 interface ListingCardProps {
   listing: Listing;
   onEdit?: (listing: Listing) => void;
+  onFindMatches?: (listing: Listing) => void;
 }
 
-export function ListingCard({ listing, onEdit }: ListingCardProps) {
+export function ListingCard({ listing, onEdit, onFindMatches }: ListingCardProps) {
   const date = new Date(listing.createdAt).toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
@@ -47,15 +48,26 @@ export function ListingCard({ listing, onEdit }: ListingCardProps) {
         </div>
       </div>
 
-      {onEdit && (
-        <button
-          type="button"
-          onClick={() => onEdit(listing)}
-          className="mt-4 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-600 transition hover:border-sky-300 hover:bg-sky-50 hover:text-sky-600"
-        >
-          Edit listing
-        </button>
-      )}
+      <div className="mt-4 flex flex-col gap-2">
+        {onFindMatches && (
+          <button
+            type="button"
+            onClick={() => onFindMatches(listing)}
+            className="w-full rounded-lg bg-sky-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-sky-500"
+          >
+            Find matches
+          </button>
+        )}
+        {onEdit && (
+          <button
+            type="button"
+            onClick={() => onEdit(listing)}
+            className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-600 transition hover:border-sky-300 hover:bg-sky-50 hover:text-sky-600"
+          >
+            Edit listing
+          </button>
+        )}
+      </div>
     </div>
   );
 }
