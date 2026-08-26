@@ -3,6 +3,8 @@ export interface User {
   email: string;
   name: string;
   createdAt: number;
+  /** Data URL of the user's avatar (base64-encoded). */
+  avatar?: string;
 }
 
 export interface AuthState {
