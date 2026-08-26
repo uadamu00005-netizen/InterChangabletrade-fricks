@@ -17,6 +17,8 @@ export function ListingCreate({ onCreated, onCancel }: ListingCreateProps) {
   const [category, setCategory] = useState(categories[0] ?? "");
   const [images, setImages] = useState<string[]>([]);
   const [imageInput, setImageInput] = useState("");
+  const [tags, setTags] = useState<string[]>([]);
+  const [tagInput, setTagInput] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
 
@@ -66,6 +68,7 @@ export function ListingCreate({ onCreated, onCancel }: ListingCreateProps) {
       currency: "USDC",
       images,
       category,
+      tags,
       sellerId: "current_user",
       sellerName: "You",
       status: "active",
@@ -210,6 +213,63 @@ export function ListingCreate({ onCreated, onCancel }: ListingCreateProps) {
                   type="button"
                   onClick={() => handleRemoveImage(idx)}
                   className="ml-0.5 text-slate-400 hover:text-red-500"
+                >
+                  x
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div>
+        <label className="mb-1 block text-sm font-medium text-slate-700">
+          Tags (optional, helps with matching)
+        </label>
+        <div className="flex gap-2">
+          <input
+            type="text"
+            value={tagInput}
+            onChange={(e) => setTagInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                const tag = tagInput.trim().toLowerCase();
+                if (tag && !tags.includes(tag) && tags.length < 10) {
+                  setTags((prev) => [...prev, tag]);
+                  setTagInput("");
+                }
+              }
+            }}
+            placeholder="e.g. luxury, urban, investment"
+            className="flex-1 rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
+          />
+          <button
+            type="button"
+            onClick={() => {
+              const tag = tagInput.trim().toLowerCase();
+              if (tag && !tags.includes(tag) && tags.length < 10) {
+                setTags((prev) => [...prev, tag]);
+                setTagInput("");
+              }
+            }}
+            className="shrink-0 rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50"
+          >
+            Add
+          </button>
+        </div>
+        {tags.length > 0 && (
+          <div className="mt-2 flex flex-wrap gap-2">
+            {tags.map((tag) => (
+              <span
+                key={tag}
+                className="flex items-center gap-1 rounded-full bg-sky-100 px-2.5 py-1 text-xs text-sky-700"
+              >
+                {tag}
+                <button
+                  type="button"
+                  onClick={() => setTags((prev) => prev.filter((t) => t !== tag))}
+                  className="ml-0.5 text-sky-400 hover:text-sky-600"
                 >
                   x
                 </button>
